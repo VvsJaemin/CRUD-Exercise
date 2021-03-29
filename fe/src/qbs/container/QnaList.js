@@ -1,25 +1,32 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 
 const QnaList =()=>{
 
-        axios.get('http://localhost:8080/qna/list',
-        {
+        const [ List, setList ] = useState([]);
 
-        })
-        .then(res => {
-            console.log(JSON.stringify(res))
+        const fetchList = () =>{
+          axios.get('http://localhost:8080/qna/list')
+          .then(res =>{
+            console.log(res)
+            setList(res.data)
+          })
+          .catch((err)=>{
+            console.log(err)
+          });
+        };
 
-        })
-        .catch(err =>{
-            alert(`다시 등록 해주세요: ${err}`)
-        } )
+    useEffect(()=>{
+      console.log('rendering')
+      fetchList();
+    }, [])
+
+
+return List.map((qna)=>{
+  return(
     
-
-
-return(
-    <form>
     <table>
     <thead>
           <tr>
@@ -30,16 +37,18 @@ return(
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>첫번째 게시글입니다.</td>
-            <td>홍길동</td>
-            <td>2021-03-27</td>
+          <tr key={qna.boardNo}>
+            <td >{qna.boardNo}</td>
+            <td><Link to={`QnaRead/${qna.boardNo}`}>{qna.title}</Link></td>
+            <td>{qna.writer}</td>
+            <td>{qna.regDate}</td>
           </tr>
         </tbody>
     </table>
-    </form>
+
 )
+})
+
 }
 
 export default QnaList;
