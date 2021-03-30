@@ -1,53 +1,65 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import '../component/QnaList.css'
 
+const QnaList = () => {
 
-const QnaList =()=>{
+    const [List, setList] = useState([]);
 
-        const [ List, setList ] = useState([]);
+    const fetchList = () => {
+        axios
+            .get('http://localhost:8080/qna/list')
+            .then(res => {
+                console.log(res)
+                setList(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+    };
 
-        const fetchList = () =>{
-          axios.get('http://localhost:8080/qna/list')
-          .then(res =>{
-            console.log(res)
-            setList(res.data)
-          })
-          .catch((err)=>{
-            console.log(err)
-          });
-        };
-
-    useEffect(()=>{
-      console.log('rendering')
-      fetchList();
+    useEffect(() => {
+        console.log(List)
+        fetchList();
     }, [])
 
+    return (
+        <form >
+            <div>Q&A 게시판
+                <table>
+                    <thead>
+                        <tr>
+                            <th>글 번호</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>등록일</th>
+                        </tr>
+                    </thead>
+                    {
+                        List.map(
+                            (qna) => [<tbody>
+                                <tr key={qna.boardNo}>
+                                    <td >{qna.boardNo}</td>
+                                    <td>
+                                        <Link to={`QnaRead/${qna.boardNo}`}>{qna.title}</Link>
+                                    </td>
+                                    <td>{qna.writer}</td>
+                                    <td>{new Date(qna.regDate).toLocaleDateString()}</td>
+                                </tr>
+                            </tbody>
+                                ]
+                        )
+                    }
 
-return List.map((qna)=>{
-  return(
-    
-    <table>
-    <thead>
-          <tr>
-            <th>No</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>등록일</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr key={qna.boardNo}>
-            <td >{qna.boardNo}</td>
-            <td><Link to={`QnaRead/${qna.boardNo}`}>{qna.title}</Link></td>
-            <td>{qna.writer}</td>
-            <td>{qna.regDate}</td>
-          </tr>
-        </tbody>
-    </table>
+                </table>
+            </div>
+            <div>
+                <Link to={`/QnaRegister`}>등록</Link>
+            </div>
+        </form>
 
-)
-})
+    )
 
 }
 

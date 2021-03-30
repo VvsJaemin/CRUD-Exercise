@@ -31,7 +31,7 @@ import lombok.extern.java.Log;
 @Log
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/qna", method= {RequestMethod.GET, RequestMethod.POST})
+@RequestMapping(value = "/qna")
 @CrossOrigin(origins="*")
 public class QnaBoardController {
 
@@ -66,15 +66,17 @@ public class QnaBoardController {
             
 
             
-            @PutMapping("/{boardNo}")
-            public ResponseEntity<QnaBoard> modify(@PathVariable("boardNo") Long boardNo, @RequestBody QnaBoard qnaboard){
-
-            qnaboard.getBoardNo();
-            service.save(qnaboard);
+            @PutMapping("/modify/{boardNo}")
+            public ResponseEntity<QnaBoard> modify(@PathVariable("boardNo") long boardNo,
+                                                                @RequestBody QnaBoard qnaboard) {
 
             log.info("Put - modify()");
+            log.info("boardNo long: " + boardNo);
+            log.info("boardNo entity: " + qnaboard.getBoardNo());
+
             
-            return new ResponseEntity<>(qnaboard, HttpStatus.OK);
+
+            return new ResponseEntity<>(service.save(qnaboard), HttpStatus.OK);
             }
 
                 @DeleteMapping("/delete/{boardNo}")
