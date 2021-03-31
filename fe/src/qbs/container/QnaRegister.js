@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import {Link} from 'react-router-dom';
 import axios from 'axios'
 
 const QnaRegister = (props) => {
-    const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-    const [writer, setWriter] = useState("")
+
+    const [register, setRegister] = useState({})
+    const {title, content, writer} = register
 
     const reg = (e) => {
         e.preventDefault()
@@ -23,6 +23,14 @@ const QnaRegister = (props) => {
             })
         }
 
+    const handleSubmit = useCallback(e => {
+        const {name, value} = e.target;
+        setRegister({
+            ...register,
+            [name]: value
+        })
+    },)
+
     return (
         <form>
             <table>
@@ -35,7 +43,8 @@ const QnaRegister = (props) => {
                             type='text'
                             placeholder='제목을 입력하세요'
                             name='title'
-                            onChange={(e) => setTitle(e.target.value)}/></td>
+                            value={register.title}
+                            onChange={handleSubmit}/></td>
                     </tr>
                     <tr>
                         <th>내용 :</th>
@@ -45,13 +54,14 @@ const QnaRegister = (props) => {
                                 rows='10'
                                 placeholder='내용을 입력하세요'
                                 name='content'
-                                onChange={(e) => setContent(e.target.value)}></textarea>
+                                value={register.content}
+                                onChange={handleSubmit}></textarea>
                         </td>
                     </tr>
                     <tr>
                         <th>작성자 :
                         </th>
-                        <td><input type="text" name="writer" onChange={(e) => setWriter(e.target.value)}/></td>
+                        <td><input type="text" name="writer" value={register.writer} onChange={handleSubmit}/></td>
                     </tr>
                     <tr>
                         <td>

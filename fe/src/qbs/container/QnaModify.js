@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom';
 const QnaModify = (props) => {
     const [update, setUpdate] = useState({})
-    const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
+    const {title, content, writer} = update;
+
 
     const Modify = e => {
         e.preventDefault()
@@ -12,7 +12,9 @@ const QnaModify = (props) => {
             .put(`http://localhost:8080/qna/modify/${props.match.params.Id}`, {
                 boardNo: props.match.params.Id,
                 title,
-                content
+                content,
+                writer
+             
             })
             .then(res => {
                 console.log(res)
@@ -27,6 +29,30 @@ const QnaModify = (props) => {
             })
         }
 
+        const fetchOne = () => {
+
+            axios
+                .get(`http://localhost:8080/qna/read/${props.match.params.Id}`)
+                .then(res => {
+                    console.log(res)
+                    setUpdate(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        };
+
+        useEffect(()=>{
+            fetchOne()
+        }, [])
+
+        const handleChange = useCallback( e => {
+            const {name, value} = e.target;
+            setUpdate({...update, 
+                [name] : value});
+           
+        },[update]);
+
     return (
         <form>
             <table>
@@ -39,7 +65,8 @@ const QnaModify = (props) => {
                             type='text'
                             placeholder='제목을 수정하세요'
                             name='title'
-                            onChange={(e) => setTitle(e.target.value)}/></td>
+                            value={update.title}
+                            onChange={handleChange}/></td>
                     </tr>
                     <tr>
                         <th>내용 :</th>
@@ -48,11 +75,16 @@ const QnaModify = (props) => {
                                 cols="30"
                                 rows='10'
                                 placeholder='내용을 수정하세요'
-                                name='content'
-                                onChange={(e) => setContent(e.target.value)}></textarea>
+                                name='content' value={update.content}
+                                onChange={handleChange}></textarea>
                         </td>
                     </tr>
-
+                    <tr>
+                        <th>작성자 :</th>
+                        <td>
+                            <input name='writer' value={update.writer} onChange={handleChange}readOnly></input>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <input type='button' onClick={Modify} value='수정'/>

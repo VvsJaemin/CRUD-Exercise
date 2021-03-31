@@ -34,6 +34,7 @@ const QnaList = () => {
                             <th>제목</th>
                             <th>작성자</th>
                             <th>등록일</th>
+                            <th>상세읽기</th>
                         </tr>
                     </thead>
                     {
@@ -42,10 +43,15 @@ const QnaList = () => {
                                 <tr key={qna.boardNo}>
                                     <td >{qna.boardNo}</td>
                                     <td>
-                                        <Link to={`QnaRead/${qna.boardNo}`}>{qna.title}</Link>
+                                        {qna.title}
                                     </td>
                                     <td>{qna.writer}</td>
                                     <td>{new Date(qna.regDate).toLocaleDateString()}</td>
+                                    <td>
+                                        <Link to={`QnaRead/${qna.boardNo}`}>
+                                            <button>자세히읽기</button>
+                                        </Link>
+                                    </td>
                                 </tr>
                             </tbody>
                                 ]

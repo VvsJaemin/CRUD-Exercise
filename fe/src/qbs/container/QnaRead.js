@@ -20,20 +20,21 @@ const QnaRead = (props) => {
     };
 
     const deleteOne = () => {
-        axios
-            .delete(`http://localhost:8080/qna/delete/${props.match.params.id}`)
-            .then(res => {
-                console.log(res)
-                alert('등록하신 글이 삭제 되었습니다.')
-                props
-                    .history
-                    .push('/')
-            })
-            .catch((err => {
-                console.log(err)
-            }))
-        }
-
+        if (window.confirm('정말 삭제하시겠습니까?')) 
+            axios
+                .delete(`http://localhost:8080/qna/delete/${props.match.params.id}`)
+                .then(res => {
+                    console.log(res)
+                    alert('등록하신 글이 삭제 되었습니다.')
+                    props
+                        .history
+                        .push('/')
+                })
+                .catch((err => {
+                    console.log(err)
+                }))
+            }
+    
     useEffect(() => {
         fetchOne();
 
@@ -54,7 +55,7 @@ const QnaRead = (props) => {
                     <td>{detail.boardNo}</td>
                     <td>{detail.title}</td>
                     <td>{detail.content}</td>
-                    <td>{detail.writer}</td>
+                    <td >{detail.writer}</td>
                 </tr>
             </tbody>
         </table>
