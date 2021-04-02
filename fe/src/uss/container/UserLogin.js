@@ -35,6 +35,7 @@ const UserLogin =(props)=>{
             <table>
                 <thead>Q&A게시판에 오신걸 환영합니다.</thead>
                 <tbody>
+                
                     <tr>
                         <th>아이디</th>
                         <td><input type='text' placeholder='아이디를 입력해주세요' name = 'username' value={login.username} onChange={handleLogin}/></td>
