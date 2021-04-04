@@ -123,8 +123,8 @@ public class UserController {
         public ResponseEntity<String> remove(@PathVariable Long userNo){
 
             service.deleteById(userNo);
-            log.info("delete");
+            log.info("remove");
 
-            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+            return new ResponseEntity<>("삭제 성공", HttpStatus.NO_CONTENT);
         }
 }
