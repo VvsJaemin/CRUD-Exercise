@@ -1,8 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react'
 import {Link} from 'react-router-dom';
 import axios from 'axios'
-import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 const UserLogin =(props)=>{
     const[login, setLogin] = useState("")
     const {username, password} = login
